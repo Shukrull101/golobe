@@ -16,14 +16,7 @@ export default function HomePage() {
   return (
     <div>
       <div className={styles.hero}>
-        <Header
-          variant="hero"
-          onLogin={() => navigate('/login')}
-          onSignup={() => navigate('/signup')}
-          user={user}
-          onAccount={() => navigate('/account')}
-          onLogout={logout}
-        />
+       
         <div className={styles.heroBody}>
           <h1>Explore the world,<br />one trip at a time.</h1>
           <p>Найдите рейсы и отели дешевле, чем у остальных команд ;)</p>
