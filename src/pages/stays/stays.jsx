@@ -1,14 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
 
-/**
- * Stays
- * Требует Tailwind CSS (JIT / v3+) с теми же токенами темы, что и компонент Flights —
- * конфиг и стили ползунка см. в README-блоке внизу файла (идентичны Flights.jsx).
- * Зависимостей, кроме React, нет.
- */
-
-// picsum.photos отдаёт стабильные фотографии по seed — удобно для демо-данных.
-// В проде замените photos на реальные фото объекта из вашего бэкенда.
 const img = (seed, n = 1) =>
   Array.from({ length: n }, (_, i) => `https://picsum.photos/seed/${seed}-${i}/600/420`);
 
