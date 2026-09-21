@@ -1,19 +1,33 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import AuthShell from './AuthShell.jsx';
 import Logo from '../Logo/Logo.jsx';
 import { EyeIcon, EyeOffIcon, FacebookIcon, GoogleIcon, AppleIcon } from '../../icons/icons.jsx';
+import { useAuth } from '../../auth/AuthContext.jsx';
 import a from './Auth.module.css';
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
   const [showPass, setShowPass] = useState(false);
-  const [email, setEmail] = useState('john.doe@gmail.com');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [remember, setRemember] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    navigate('/'); 
+    setError('');
+    setLoading(true);
+    try {
+      await login({ email, password, remember });
+      navigate(location.state?.from ?? '/account', { replace: true });
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
   }
 
   return (
@@ -55,14 +69,22 @@ export default function LoginPage() {
 
         <div className={a.rowBetween}>
           <label className={a.checkboxLabel}>
-            <input type="checkbox" /> Remember me
+            <input
+              type="checkbox"
+              checked={remember}
+              onChange={(e) => setRemember(e.target.checked)}
+            /> Remember me
           </label>
           <button type="button" className={a.link} onClick={() => navigate('/forgot-password')}>
             Forgot Password
           </button>
         </div>
 
-        <button className={a.submit} type="submit">Login</button>
+        {error && (
+          <p style={{ fontSize: 12.5, color: '#D0604A', margin: '-10px 0 0' }}>{error}</p>
+        )}
+
+        <button className={a.submit} type="submit" disabled={loading}>Login</button>
 
         <p className={a.footNote}>
           Don&rsquo;t have an account?{' '}

@@ -2,15 +2,23 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthShell from './AuthShell.jsx';
 import { ChevronLeft, FacebookIcon, GoogleIcon, AppleIcon } from '../../icons/icons.jsx';
+import { requestPasswordReset } from '../../auth/authStorage.js';
 import a from './Auth.module.css';
 
 export default function ForgotPasswordPage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('john.doe@gmail.com');
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
 
   function handleSubmit(e) {
     e.preventDefault();
-    navigate('/verify-code');
+    setError('');
+    try {
+      requestPasswordReset(email);
+      navigate('/verify-code');
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   return (
@@ -35,6 +43,10 @@ export default function ForgotPasswordPage() {
             required
           />
         </label>
+
+{error && (
+          <p style={{ fontSize: 12.5, color: '#D0604A', margin: '-10px 0 0' }}>{error}</p>
+        )}
 
         <button className={a.submit} type="submit">Submit</button>
 

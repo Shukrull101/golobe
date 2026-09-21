@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import AuthShell from './AuthShell.jsx';
 import Logo from '../Logo/Logo.jsx';
 import { EyeIcon, EyeOffIcon, FacebookIcon, GoogleIcon, AppleIcon } from '../../icons/icons.jsx';
+import { useAuth } from '../../auth/AuthContext.jsx';
+import { MIN_PASSWORD_LENGTH } from '../../auth/authStorage.js';
 import a from './Auth.module.css';
 
 export default function SignupPage() {
@@ -10,11 +12,48 @@ export default function SignupPage() {
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [agree, setAgree] = useState(false);
+  const { register } = useAuth();
+  const [form, setForm] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    password: '',
+    confirm: '',
+  });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e) {
+  const mismatch = form.confirm.length > 0 && form.confirm !== form.password;
+
+  function field(name) {
+    return {
+      value: form[name],
+      onChange: (e) => setForm((f) => ({ ...f, [name]: e.target.value })),
+    };
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
     if (!agree) return;
-    navigate('/login');
+    setError('');
+    if (form.password.length < MIN_PASSWORD_LENGTH) {
+      setError(`Пароль должен быть не короче ${MIN_PASSWORD_LENGTH} символов`);
+      return;
+    }
+    if (mismatch) {
+      setError('Пароли не совпадают');
+      return;
+    }
+    setLoading(true);
+    try {
+      const { confirm: _c, ...data } = form;
+      await register(data);
+      navigate('/account', { replace: true });
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
   }
 
   return (
@@ -27,28 +66,28 @@ export default function SignupPage() {
         <div className={a.row}>
           <label className={a.field}>
             <span className={a.label}>First Name</span>
-            <input className={a.input} type="text" required />
+            <input className={a.input} type="text" required {...field('firstName')} />
           </label>
           <label className={a.field}>
             <span className={a.label}>Last Name</span>
-            <input className={a.input} type="text" required />
+            <input className={a.input} type="text" required {...field('lastName')} />
           </label>
         </div>
 
         <div className={a.row}>
           <label className={a.field}>
             <span className={a.label}>Email</span>
-            <input className={a.input} type="email" required />
+            <input className={a.input} type="email" required {...field('email')} />
           </label>
           <label className={a.field}>
             <span className={a.label}>Phone Number</span>
-            <input className={a.input} type="tel" required />
+            <input className={a.input} type="tel" required {...field('phone')} />
           </label>
         </div>
 
         <label className={a.field}>
           <span className={a.label}>Password</span>
-          <input className={a.input} type={showPass ? 'text' : 'password'} required />
+          <input className={a.input} type={showPass ? 'text' : 'password'} required {...field('password')} />
           <button type="button" className={a.eyeBtn} onClick={() => setShowPass((v) => !v)}>
             {showPass ? <EyeOffIcon /> : <EyeIcon />}
           </button>
@@ -56,7 +95,7 @@ export default function SignupPage() {
 
         <label className={a.field}>
           <span className={a.label}>Confirm Password</span>
-          <input className={a.input} type={showConfirm ? 'text' : 'password'} required />
+          <input className={a.input} type={showConfirm ? 'text' : 'password'} required {...field('confirm')} />
           <button type="button" className={a.eyeBtn} onClick={() => setShowConfirm((v) => !v)}>
             {showConfirm ? <EyeOffIcon /> : <EyeIcon />}
           </button>
@@ -70,7 +109,11 @@ export default function SignupPage() {
           </span>
         </label>
 
-        <button className={a.submit} type="submit" disabled={!agree}>Create account</button>
+        {error && (
+          <p style={{ fontSize: 12.5, color: '#D0604A', margin: '-10px 0 0' }}>{error}</p>
+        )}
+
+        <button className={a.submit} type="submit" disabled={!agree || loading}>Create account</button>
 
         <p className={a.footNote}>
           Already have an account?{' '}

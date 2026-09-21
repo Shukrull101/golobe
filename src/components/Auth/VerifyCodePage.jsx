@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import AuthShell from './AuthShell.jsx';
 import { ChevronLeft, EyeIcon, EyeOffIcon } from '../../icons/icons.jsx';
+import { getPendingReset, resendPasswordReset, verifyResetCode } from '../../auth/authStorage.js';
 import a from './Auth.module.css';
 
 const RESEND_SECONDS = 30;
@@ -11,6 +12,8 @@ export default function VerifyCodePage() {
   const [code, setCode] = useState('');
   const [reveal, setReveal] = useState(false);
   const [cooldown, setCooldown] = useState(RESEND_SECONDS);
+  const [error, setError] = useState('');
+  const [hasReset] = useState(() => getPendingReset() !== null);
 
   useEffect(() => {
     if (cooldown === 0) return;
@@ -20,13 +23,27 @@ export default function VerifyCodePage() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    navigate('/set-password');
+    setError('');
+    try {
+      verifyResetCode(code);
+      navigate('/set-password');
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   function handleResend() {
     if (cooldown > 0) return;
-    setCooldown(RESEND_SECONDS);
+    setError('');
+    try {
+      resendPasswordReset();
+      setCooldown(RESEND_SECONDS);
+    } catch (err) {
+      setError(err.message);
+    }
   }
+
+  if (!hasReset) return <Navigate to="/forgot-password" replace />;
 
   return (
     <AuthShell label="Verify code">
@@ -59,6 +76,10 @@ export default function VerifyCodePage() {
             {cooldown > 0 ? `Resend in ${cooldown}s` : 'Resend'}
           </button>
         </p>
+
+{error && (
+          <p style={{ fontSize: 12.5, color: '#D0604A', margin: '-10px 0 0' }}>{error}</p>
+        )}
 
         <button className={a.submit} type="submit">Verify</button>
       </form>
