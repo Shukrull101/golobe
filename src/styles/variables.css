@@ -1,0 +1,31 @@
+/* Globe — общие дизайн-токены. Подключить один раз в корневом App.jsx (import) */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Manrope:wght@400;500;600&display=swap');
+
+:root {
+  /* Палитра из макета Figma */
+  --globe-ink: #0F1D17;        /* тёмно-зелёный/чёрный — текст, кнопки, шапка */
+  --globe-ink-soft: #2B3A33;
+  --globe-mint: #8FD6B0;       /* основной мятный акцент */
+  --globe-mint-deep: #6FC29A;
+  --globe-mint-pale: #DCF1E4;  /* светлый мятный фон (футер, подложки) */
+  --globe-mint-paler: #EAF7EF;
+  --globe-paper: #FFFFFF;
+  --globe-canvas: #F3F4F2;     /* серый фон auth-страниц */
+  --globe-line: #E4E7E3;
+  --globe-muted: #7C8A83;
+  --globe-coral: #F0A98F;      /* акцент иллюстрации почтового ящика */
+
+  --globe-font-display: 'Sora', 'Manrope', system-ui, sans-serif;
+  --globe-font-text: 'Manrope', system-ui, sans-serif;
+
+  --globe-radius-s: 10px;
+  --globe-radius-m: 16px;
+  --globe-radius-l: 28px;
+
+  --globe-shadow-card: 0 24px 60px -24px rgba(15, 29, 23, 0.35);
+  --globe-shadow-soft: 0 12px 30px -18px rgba(15, 29, 23, 0.25);
+
+  --globe-ease: cubic-bezier(.22, 1, .36, 1);
+}
+
+* { box-sizing: border-box; }

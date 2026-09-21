@@ -1,0 +1,189 @@
+.eyebrow {
+  font-family: var(--globe-font-display);
+  font-weight: 700;
+  font-size: 20px;
+  margin: 0 0 4px;
+}
+
+.title {
+  font-family: var(--globe-font-display);
+  font-weight: 700;
+  font-size: 30px;
+  margin: 22px 0 6px;
+}
+
+.subtitle {
+  color: var(--globe-muted);
+  font-size: 14px;
+  margin: 0 0 28px;
+  max-width: 360px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+}
+
+.label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--globe-ink-soft);
+}
+
+.input {
+  padding: 13px 16px;
+  border: 1px solid var(--globe-line);
+  border-radius: var(--globe-radius-s);
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color .2s var(--globe-ease), box-shadow .2s var(--globe-ease);
+  background: var(--globe-paper);
+}
+.input:focus { border-color: var(--globe-mint-deep); box-shadow: 0 0 0 4px rgba(143,214,176,.3); }
+
+.eyeBtn {
+  position: absolute;
+  right: 14px;
+  top: 34px;
+  background: none;
+  border: none;
+  color: var(--globe-muted);
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  transition: color .2s var(--globe-ease), transform .15s var(--globe-ease);
+}
+.eyeBtn:hover { color: var(--globe-ink); }
+.eyeBtn:active { transform: scale(.9); }
+
+.rowBetween {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--globe-ink-soft);
+  cursor: pointer;
+}
+
+.link {
+  color: var(--globe-mint-deep);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font: inherit;
+  padding: 0;
+}
+.link:hover { text-decoration: underline; }
+
+.terms { font-size: 13px; color: var(--globe-ink-soft); }
+
+.submit {
+  margin-top: 4px;
+  border: none;
+  border-radius: var(--globe-radius-s);
+  padding: 15px;
+  background: var(--globe-mint);
+  color: var(--globe-ink);
+  font: inherit;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform .2s var(--globe-ease), background .25s var(--globe-ease), box-shadow .25s var(--globe-ease);
+}
+.submit:hover { background: var(--globe-mint-deep); box-shadow: 0 12px 24px -10px rgba(111,194,154,.6); transform: translateY(-2px); }
+.submit:active { transform: translateY(0) scale(.98); }
+.submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+.footNote {
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--globe-ink-soft);
+  margin-top: 4px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--globe-muted);
+  font-size: 12.5px;
+  margin: 6px 0;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--globe-line);
+}
+
+.socialRow {
+  display: flex;
+  gap: 12px;
+}
+
+.socialBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border: 1px solid var(--globe-line);
+  border-radius: var(--globe-radius-s);
+  background: var(--globe-paper);
+  cursor: pointer;
+  transition: transform .2s var(--globe-ease), border-color .2s var(--globe-ease), box-shadow .2s var(--globe-ease);
+}
+.socialBtn:hover { transform: translateY(-2px); border-color: var(--globe-mint-deep); box-shadow: var(--globe-shadow-soft); }
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--globe-muted);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-bottom: 18px;
+  width: fit-content;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform .2s var(--globe-ease), color .2s var(--globe-ease);
+}
+.backLink:hover { color: var(--globe-ink); transform: translateX(-3px); }
+
+.resendHint { font-size: 13px; color: var(--globe-muted); margin-top: -6px; }
+
+/* лёгкое "покачивание" при ошибке ввода — используется через доп. класс .shake */
+.shake { animation: shake .4s var(--globe-ease); }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}

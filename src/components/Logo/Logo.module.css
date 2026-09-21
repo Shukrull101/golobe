@@ -1,0 +1,77 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--globe-font-display);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -.02em;
+  color: inherit;
+  user-select: none;
+}
+
+.planetWrap {
+  position: relative;
+  width: var(--logo-size, 22px);
+  height: var(--logo-size, 22px);
+  margin: 0 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* сфера планеты: конус-градиент "полосами" + вращение создают эффект вращающегося глобуса */
+.planet {
+  width: 72%;
+  height: 72%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    var(--globe-mint) 0deg 90deg,
+    var(--globe-mint-deep) 90deg 180deg,
+    var(--globe-mint) 180deg 270deg,
+    var(--globe-mint-deep) 270deg 360deg
+  );
+  box-shadow:
+    inset -2px -2px 4px rgba(0,0,0,.35),
+    inset 2px 2px 3px rgba(255,255,255,.35);
+  animation: spin 5s linear infinite;
+}
+
+/* тонкое наклонное кольцо, как у Сатурна */
+.ring {
+  position: absolute;
+  width: 118%;
+  height: 42%;
+  border: 1.4px solid var(--globe-mint-deep);
+  border-radius: 50%;
+  opacity: .75;
+  transform: rotate(-20deg);
+}
+
+/* маленькая луна, летающая по орбите вокруг планеты */
+.moon {
+  position: absolute;
+  width: 3.5px;
+  height: 3.5px;
+  border-radius: 50%;
+  background: #fff;
+  top: 2%;
+  left: 50%;
+  transform-origin: 0 calc(var(--logo-size, 22px) * 0.5 - 2px);
+  animation: orbit 3.2s linear infinite;
+  box-shadow: 0 0 3px rgba(255,255,255,.8);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(0) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(0) rotate(-360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .planet, .moon { animation: none; }
+}

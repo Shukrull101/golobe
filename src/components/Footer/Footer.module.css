@@ -1,0 +1,179 @@
+.footer {
+  position: relative;
+  /* Возвращаем футеру легкий светлый оттенок */
+  background: var(--globe-mint-pale);
+  padding: 80px 32px 32px;
+  font-family: var(--globe-font-text);
+  color: var(--globe-ink);
+  margin-top: 80px;
+}
+
+.newsletter {
+  position: absolute;
+  top: -70px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 64px);
+  max-width: 1100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  /* Делаем карточку подписки ярко-зеленой */
+  background: #a8dfb8;
+  border: 1px solid rgba(15,29,23,.06);
+  border-radius: var(--globe-radius-l);
+  padding: 40px 48px;
+  overflow: hidden;
+  box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.05);
+}
+
+.newsletterTitle {
+  font-family: var(--globe-font-display);
+  font-size: 34px;
+  line-height: 1.1;
+  margin: 0 0 14px;
+  font-weight: 700;
+}
+
+.newsletterKicker {
+  margin: 0 0 4px;
+  font-weight: 600;
+  color: var(--globe-mint-deep);
+}
+
+.newsletterCopy {
+  margin: 0 0 18px;
+  color: var(--globe-muted);
+  max-width: 360px;
+  font-size: 14px;
+}
+
+.form {
+  display: flex;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 6px;
+  border-radius: 999px;
+  border: 1px solid var(--globe-line);
+  max-width: 440px;
+}
+
+.input {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+}
+
+.subscribeBtn {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 26px;
+  background: var(--globe-ink);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .25s var(--globe-ease), transform .2s var(--globe-ease);
+}
+.subscribeBtn:hover { background: var(--globe-mint-deep); transform: translateY(-2px); }
+
+/* --- Блок с картинкой почты --- */
+.photoSlot {
+  flex-shrink: 0;
+  width: 280px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent; /* Делаем фон прозрачным, чтобы сливался с карточкой */
+  border-radius: var(--globe-radius-m);
+  overflow: hidden;
+}
+
+.photoImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: scale(1.15);
+}
+
+/* --- Ссылки и колонки снизу --- */
+.linksRow {
+  display: flex;
+  gap: 40px;
+  justify-content: space-between;
+  padding-top: 100px;
+  flex-wrap: wrap;
+}
+
+.brand { max-width: 160px; }
+.brandLogo { margin-bottom: 14px; }
+
+.socials {
+  display: flex;
+  gap: 12px;
+  color: var(--globe-ink);
+  align-items: center;
+}
+
+.socialLink {
+  color: inherit;
+  display: inline-flex;
+  transition: transform .2s var(--globe-ease), color .2s var(--globe-ease);
+}
+.socialLink:hover {
+  transform: translateY(-3px);
+  color: var(--globe-mint-deep);
+}
+
+.socialLetter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px; height: 18px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: transform .2s var(--globe-ease);
+}
+
+.columnTitle {
+  font-weight: 700;
+  margin: 0 0 14px;
+  font-size: 14px;
+}
+
+.link {
+  display: block;
+  color: var(--globe-muted);
+  text-decoration: none;
+  font-size: 13.5px;
+  margin-bottom: 10px;
+  transition: color .2s var(--globe-ease), transform .2s var(--globe-ease);
+}
+.link:hover { color: var(--globe-ink); transform: translateX(3px); }
+
+@media (max-width: 900px) {
+  .newsletter { 
+    position: relative; 
+    top: 0; 
+    left: 0; 
+    transform: none; 
+    width: 100%;
+    flex-direction: column; 
+    text-align: center; 
+    padding: 32px 24px; 
+    margin-bottom: 40px;
+  }
+  .footer { margin-top: 0; padding-top: 40px; }
+  .linksRow { padding-top: 20px; }
+  .newsletterCopy { max-width: 100%; }
+  .form { justify-content: center; margin: 0 auto; }
+}
