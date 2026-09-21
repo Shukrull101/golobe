@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import AuthShell from './AuthShell.jsx';
 import SuccessModal from './SuccessModal.jsx';
 import { EyeIcon, EyeOffIcon } from '../../icons/icons.jsx';
+import { getPendingReset, MIN_PASSWORD_LENGTH, resetPassword } from '../../auth/authStorage.js';
 import a from './Auth.module.css';
 
 function scorePassword(pw) {
@@ -24,20 +25,38 @@ export default function SetPasswordPage() {
   const [confirm, setConfirm] = useState('');
   const [shake, setShake] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [error, setError] = useState('');
+  const [canReset] = useState(() => getPendingReset()?.verified === true);
 
   const strength = useMemo(() => scorePassword(password), [password]);
   const mismatch = confirm.length > 0 && confirm !== password;
 
-  function handleSubmit(e) {
+  function fail(message) {
+    setError(message);
+    setShake(true);
+    setTimeout(() => setShake(false), 400);
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
+    setError('');
     if (mismatch || password.length === 0) {
-      setShake(true);
-      setTimeout(() => setShake(false), 400);
+      fail('');
       return;
     }
-    // здесь будет реальный запрос смены пароля от бэкенд-части команды
-    setShowSuccess(true);
+    if (password.length < MIN_PASSWORD_LENGTH) {
+      fail(`Пароль должен быть не короче ${MIN_PASSWORD_LENGTH} символов`);
+      return;
+    }
+    try {
+      await resetPassword(password);
+      setShowSuccess(true);
+    } catch (err) {
+      fail(err.message);
+    }
   }
+
+  if (!canReset && !showSuccess) return <Navigate to="/forgot-password" replace />;
 
   return (
     <>
@@ -101,6 +120,10 @@ export default function SetPasswordPage() {
           <p style={{ fontSize: 12.5, color: '#D0604A', margin: '-10px 0 0' }}>
             Пароли не совпадают
           </p>
+        )}
+
+{error && (
+          <p style={{ fontSize: 12.5, color: '#D0604A', margin: '-10px 0 0' }}>{error}</p>
         )}
 
         <button className={a.submit} type="submit">Set password</button>

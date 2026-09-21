@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header/Header.jsx';
 import Footer from '../components/Footer/Footer.jsx';
+import { useAuth } from '../auth/AuthContext.jsx';
 import styles from './HomePage.module.css';
 
 /**
@@ -10,14 +11,15 @@ import styles from './HomePage.module.css';
  */
 export default function HomePage() {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   return (
     <div>
       <div className={styles.hero}>
         <Header
           variant="hero"
-          onLogin={() => navigate('/login')}
-          onSignup={() => navigate('/signup')}
+          onLogin={() => navigate(user ? '/account' : '/login')}
+          onSignup={() => navigate(user ? '/account' : '/signup')}
         />
         <div className={styles.heroBody}>
           <h1>Explore the world,<br />one trip at a time.</h1>
