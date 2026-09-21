@@ -100,3 +100,8 @@
   .imageSide { display: none; }
   .formSide { padding: 40px 28px; }
 }
+
+@media (max-width: 480px) {
+  .page { padding: 16px; }
+  .formSide { padding: 28px 20px; }
+}

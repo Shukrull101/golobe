@@ -1,8 +1,15 @@
 import { useState } from 'react';
-import { FacebookIcon } from '../../icons/icons.jsx';
+import { FacebookIcon, TwitterIcon, YoutubeIcon, InstagramIcon } from '../../icons/icons.jsx';
 import Logo from '../Logo/Logo.jsx';
 import styles from './Footer.module.css';
 import pochta from '../../assets/shukrullo/pochta.png';
+
+const socials = [
+  { label: 'Facebook', href: 'https://facebook.com', Icon: FacebookIcon },
+  { label: 'Twitter', href: 'https://twitter.com', Icon: TwitterIcon },
+  { label: 'YouTube', href: 'https://youtube.com', Icon: YoutubeIcon },
+  { label: 'Instagram', href: 'https://instagram.com', Icon: InstagramIcon },
+];
 
 const columns = [
   { title: 'Our Destinations', links: ['Canada', 'Alaska', 'France', 'Iceland'] },
@@ -28,7 +35,7 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={styles.newsletter}>
         <div className={styles.newsletterText}>
-          <h3 className={styles.newsletterTitle}>Subscribe<br />Newsletter</h3>
+          <h3 className={styles.newsletterTitle}>Subscribe{' '}<br />Newsletter</h3>
           <p className={styles.newsletterKicker}>The Travel</p>
           <p className={styles.newsletterCopy}>
             Get inspired! Receive travel discounts, tips and behind the scenes stories.
@@ -49,7 +56,7 @@ export default function Footer() {
         </div>
 
         <div className={styles.photoSlot}>
-          <img src={pochta} alt="Pochta" className={styles.photoImg} />
+          <img src={pochta} alt="" className={styles.photoImg} />
         </div>
       </div>
 
@@ -57,10 +64,18 @@ export default function Footer() {
         <div className={styles.brand}>
           <div className={styles.brandLogo}><Logo size={20} /></div>
           <div className={styles.socials}>
-            <FacebookIcon />
-            <span className={styles.socialLetter}>t</span>
-            <span className={styles.socialLetter}>▶</span>
-            <span className={styles.socialLetter}>◎</span>
+            {socials.map(({ label, href, Icon }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={label}
+                className={styles.socialLink}
+              >
+                <Icon />
+              </a>
+            ))}
           </div>
         </div>
 

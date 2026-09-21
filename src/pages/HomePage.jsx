@@ -11,15 +11,18 @@ import styles from './HomePage.module.css';
  */
 export default function HomePage() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <div>
       <div className={styles.hero}>
         <Header
           variant="hero"
-          onLogin={() => navigate(user ? '/account' : '/login')}
-          onSignup={() => navigate(user ? '/account' : '/signup')}
+          onLogin={() => navigate('/login')}
+          onSignup={() => navigate('/signup')}
+          user={user}
+          onAccount={() => navigate('/account')}
+          onLogout={logout}
         />
         <div className={styles.heroBody}>
           <h1>Explore the world,<br />one trip at a time.</h1>

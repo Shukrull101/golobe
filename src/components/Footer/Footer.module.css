@@ -1,25 +1,28 @@
+/*
+ * Карточка подписки «висит» наполовину над футером: она стоит в обычном потоке,
+ * а отрицательный margin-top поднимает её вверх ровно на величину --overlap.
+ * Так ссылки под ней никогда не перекрываются, какой бы высоты ни был текст.
+ */
 .footer {
+  --overlap: 120px;
   position: relative;
-  /* Возвращаем футеру легкий светлый оттенок */
   background: var(--globe-mint-pale);
-  padding: 80px 32px 32px;
+  padding: 0 32px 32px;
   font-family: var(--globe-font-text);
   color: var(--globe-ink);
-  margin-top: 80px;
+  margin-top: var(--overlap);
 }
 
 .newsletter {
-  position: absolute;
-  top: -70px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% - 64px);
-  max-width: 1100px;
+  position: relative;
+  top: calc(-1 * var(--overlap));
+  margin: 0 auto calc(-1 * var(--overlap));
+  width: 100%;
+  max-width: 1232px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  /* Делаем карточку подписки ярко-зеленой */
   background: #a8dfb8;
   border: 1px solid rgba(15,29,23,.06);
   border-radius: var(--globe-radius-l);
@@ -27,6 +30,8 @@
   overflow: hidden;
   box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.05);
 }
+
+.newsletterText { min-width: 0; }
 
 .newsletterTitle {
   font-family: var(--globe-font-display);
@@ -38,13 +43,15 @@
 
 .newsletterKicker {
   margin: 0 0 4px;
-  font-weight: 600;
-  color: var(--globe-mint-deep);
+  font-weight: 700;
+  color: var(--globe-ink);
+  opacity: .8;
 }
 
 .newsletterCopy {
   margin: 0 0 18px;
-  color: var(--globe-muted);
+  color: var(--globe-ink-soft);
+  opacity: .8;
   max-width: 360px;
   font-size: 14px;
 }
@@ -61,6 +68,7 @@
 
 .input {
   flex: 1;
+  min-width: 0;
   padding: 10px 16px;
   border-radius: 999px;
   border: none;
@@ -71,6 +79,7 @@
 }
 
 .subscribeBtn {
+  flex-shrink: 0;
   border: none;
   border-radius: 999px;
   padding: 12px 26px;
@@ -93,7 +102,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: transparent; /* Делаем фон прозрачным, чтобы сливался с карточкой */
   border-radius: var(--globe-radius-m);
   overflow: hidden;
 }
@@ -107,19 +115,20 @@
 
 /* --- Ссылки и колонки снизу --- */
 .linksRow {
-  display: flex;
-  gap: 40px;
-  justify-content: space-between;
-  padding-top: 100px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(140px, 1.2fr) repeat(5, minmax(0, 1fr));
+  gap: 32px 24px;
+  max-width: 1232px;
+  margin: 0 auto;
+  padding-top: 56px;
 }
 
-.brand { max-width: 160px; }
+.brand { min-width: 0; }
 .brandLogo { margin-bottom: 14px; }
 
 .socials {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   color: var(--globe-ink);
   align-items: center;
 }
@@ -134,15 +143,7 @@
   color: var(--globe-mint-deep);
 }
 
-.socialLetter {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px; height: 18px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: transform .2s var(--globe-ease);
-}
+.column { min-width: 0; }
 
 .columnTitle {
   font-weight: 700;
@@ -152,6 +153,7 @@
 
 .link {
   display: block;
+  width: fit-content;
   color: var(--globe-muted);
   text-decoration: none;
   font-size: 13.5px;
@@ -160,20 +162,39 @@
 }
 .link:hover { color: var(--globe-ink); transform: translateX(3px); }
 
-@media (max-width: 900px) {
-  .newsletter { 
-    position: relative; 
-    top: 0; 
-    left: 0; 
-    transform: none; 
-    width: 100%;
-    flex-direction: column; 
-    text-align: center; 
-    padding: 32px 24px; 
-    margin-bottom: 40px;
+@media (max-width: 1024px) {
+  /* лого сверху на всю ширину, колонки — под ним */
+  .linksRow { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .brand {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
-  .footer { margin-top: 0; padding-top: 40px; }
-  .linksRow { padding-top: 20px; }
+  .brandLogo { margin-bottom: 0; }
+}
+
+@media (max-width: 900px) {
+  .footer { --overlap: 80px; padding: 0 16px 24px; }
+  .newsletter {
+    flex-direction: column;
+    text-align: center;
+    padding: 32px 24px 0;
+    gap: 8px;
+  }
+  .newsletterTitle { font-size: 28px; }
   .newsletterCopy { max-width: 100%; }
-  .form { justify-content: center; margin: 0 auto; }
+  .form { margin: 0 auto; }
+  .photoSlot { width: 220px; height: 150px; }
+  .linksRow { grid-template-columns: repeat(3, minmax(0, 1fr)); padding-top: 40px; }
+}
+
+@media (max-width: 520px) {
+  .newsletter { padding: 28px 16px 0; border-radius: var(--globe-radius-m); }
+  .newsletterTitle { font-size: 24px; }
+  .newsletterTitle br { display: none; }
+  .form { max-width: 100%; }
+  .input { padding: 10px 12px; }
+  .subscribeBtn { padding: 12px 18px; }
+  .linksRow { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 16px; }
 }
